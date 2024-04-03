@@ -42,9 +42,9 @@ const ColorPicker = () => {
         <div className={styles.colorpicker}>
             <div 
             className={styles.colorpicker__block}
-                style={{
-                    backgroundColor: colors[activeIndex].value,
-                }}
+            style={{
+                backgroundColor: colors[activeIndex].value,
+            }}
             >
                 <h2 className={styles.colorpicker__name}>{colors[activeIndex].name}</h2>
             </div>
