@@ -15,6 +15,8 @@ const Homepage = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [daysOfWeek, setDaysOfWeek] = useState([]);
+  const [activeDayIndex, setActiveDayIndex] = useState(0);
 
   const peopleArr = getPeople();
 
@@ -35,17 +37,26 @@ const Homepage = () => {
       setWeatherData(response);
     };
     location ? fetchData() : null;
-  }, [location]);
+  }, [location]); // when location changes, useEffect triggers; [] is a "dependency"
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await getWeatherData();
-  //     setWeatherData(response);
-  //   };
-  //   fetchData();
-  // }, []);
+useEffect(() => {
+  // filter out the days of the week
+  const tempWeek = [];
 
-  // console.log ({ peopleArr });
+  weatherData && weatherData.list.filter((block) => {
+    const date = new Date(block.dt * 1000);
+    const options = { weekday: "short" };
+    const day = date.toLocaleDateString("en-US", options);
+    // console.log(day);
+    if (!tempWeek.includes(day)) {
+      tempWeek.push(day);
+    }
+  });
+
+  setDaysOfWeek(tempWeek);
+
+  // then set state with the days of the week
+}, [weatherData]);
 
   return (
   <div>
@@ -67,6 +78,26 @@ const Homepage = () => {
     {/*<PeoplePicker people={peopleArr} />
     <ButtonDemo />
     <ColorPicker />*/}
+    {daysOfWeek && (
+      <section>
+        <ul>
+          {daysOfWeek.map((day, index) => {
+            return <li key={index}>{day}</li>
+          })}  
+        </ul>
+        <div>{weatherData?.list
+          .filter((block) => {
+            const date = new Date(block.dt * 1000);
+            const options = { weekday: "short" };
+            const day = date.toLocaleDateString("en-US", options);
+            return day === daysOfWeek[activeDayIndex];
+          })
+          .map((block, index) => {
+            return <p key={index}>{block.main.temp}</p>
+          })}
+        </div>
+      </section>
+    )}
   </div>
   );
 };
