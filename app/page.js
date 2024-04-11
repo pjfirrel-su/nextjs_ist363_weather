@@ -7,6 +7,7 @@ import Image from "next/image";
 import ButtonDemo from "../components/ButtonDemo";
 import ColorPicker from "../components/ColorPicker";
 import PeoplePicker from "../components/PeoplePicker";
+import Tabs from "../components/Tabs";
 
 import { getGeoLocation, getPeople, getWeatherData, getWeatherDataByLatLon } from "../lib/api";
 
@@ -80,11 +81,10 @@ useEffect(() => {
     <ColorPicker />*/}
     {daysOfWeek && (
       <section>
-        <ul>
-          {daysOfWeek.map((day, index) => {
-            return <li key={index}>{day}</li>
-          })}  
-        </ul>
+        <Tabs
+          activeIndex={activeDayIndex}
+          items={daysOfWeek} 
+          clickHandler={setActiveDayIndex}/>
         <div>{weatherData?.list
           .filter((block) => {
             const date = new Date(block.dt * 1000);
