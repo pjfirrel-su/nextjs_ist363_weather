@@ -1,12 +1,13 @@
 "use client";
 
+// core components
 import { useState, useEffect } from "react";
 
+// next js components
 import Image from "next/image";
 
-import ButtonDemo from "../components/ButtonDemo";
-import ColorPicker from "../components/ColorPicker";
-import PeoplePicker from "../components/PeoplePicker";
+// custom components
+import List from "../components/List";
 import Tabs from "../components/Tabs";
 
 import { getGeoLocation, getPeople, getWeatherData, getWeatherDataByLatLon } from "../lib/api";
@@ -79,23 +80,18 @@ useEffect(() => {
     {/*<PeoplePicker people={peopleArr} />
     <ButtonDemo />
     <ColorPicker />*/}
-    {daysOfWeek && (
+    {weatherData && daysOfWeek && (
       <section>
         <Tabs
           activeIndex={activeDayIndex}
           items={daysOfWeek} 
-          clickHandler={setActiveDayIndex}/>
-        <div>{weatherData?.list
-          .filter((block) => {
-            const date = new Date(block.dt * 1000);
-            const options = { weekday: "short" };
-            const day = date.toLocaleDateString("en-US", options);
-            return day === daysOfWeek[activeDayIndex];
-          })
-          .map((block, index) => {
-            return <p key={index}>{block.main.temp}</p>
-          })}
-        </div>
+          clickHandler={setActiveDayIndex}
+        />
+        <List 
+          activeIndex={activeDayIndex}
+          items={weatherData?.list}
+          daysOfWeek={daysOfWeek}
+        />
       </section>
     )}
   </div>
