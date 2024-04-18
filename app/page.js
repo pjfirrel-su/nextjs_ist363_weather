@@ -7,11 +7,17 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 // custom components
+import Col from "../components/Col";
+import Container from "../components/Container"
 import List from "../components/List";
+import Row from "../components/Row";
 import Tabs from "../components/Tabs";
 
-import { getGeoLocation, getPeople, getWeatherData, getWeatherDataByLatLon } from "../lib/api";
-
+import { 
+  getGeoLocation,
+  getPeople,
+  getWeatherDataByLatLon
+} from "../lib/api";
 
 const Homepage = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -19,8 +25,6 @@ const Homepage = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [daysOfWeek, setDaysOfWeek] = useState([]);
   const [activeDayIndex, setActiveDayIndex] = useState(0);
-
-  const peopleArr = getPeople();
 
   useEffect(() => {
     getGeoLocation().then((position) => {
@@ -61,40 +65,42 @@ useEffect(() => {
 }, [weatherData]);
 
   return (
-  <div>
-    <h1>Weather App</h1>
-    {errorMsg && <div>{errorMsg}</div>}
-    {weatherData && (
-      <div>
-        <h2>{weatherData.city.name}</h2>
-        <p>Current Temp: {weatherData.list[0].main.temp}&deg; F</p>
-        <p>{weatherData.list[0].weather[0].description}</p>
-        <Image 
-          src={`https://openweathermap.org/img/wn/${weatherData.list[0].weather[0].icon}@2x.png`}
-          alt={`Weather Icon`}
-          width={100}
-          height={100}
-        />
-      </div>
+    <Container>
+      <h1>Weather App</h1>
+      {errorMsg && <div>{errorMsg}</div>}
+      {weatherData && (
+        <Row>
+          <Col>
+            <h2>{weatherData.city.name}</h2>
+            <p>Current Temp: {weatherData.list[0].main.temp}&deg; F</p>
+            <p>{weatherData.list[0].weather[0].description}</p>
+            <Image 
+              src={`https://openweathermap.org/img/wn/${weatherData.list[0].weather[0].icon}@2x.png`}
+              alt={`Weather Icon`}
+              width={100}
+              height={100}
+            />
+          </Col>
+          <Col>
+            Tabs and List goes here.
+          </Col>
+        </Row>
       )}
-    {/*<PeoplePicker people={peopleArr} />
-    <ButtonDemo />
-    <ColorPicker />*/}
-    {weatherData && daysOfWeek && (
-      <section>
-        <Tabs
-          activeIndex={activeDayIndex}
-          items={daysOfWeek} 
-          clickHandler={setActiveDayIndex}
-        />
-        <List 
-          activeIndex={activeDayIndex}
-          items={weatherData?.list}
-          daysOfWeek={daysOfWeek}
-        />
-      </section>
-    )}
-  </div>
+      {weatherData && daysOfWeek && (
+        <section>
+          <Tabs
+            activeIndex={activeDayIndex}
+            items={daysOfWeek} 
+            clickHandler={setActiveDayIndex}
+          />
+          <List 
+            activeIndex={activeDayIndex}
+            items={weatherData?.list}
+            daysOfWeek={daysOfWeek}
+          />
+        </section>
+      )}
+    </Container>
   );
 };
 export default Homepage;
