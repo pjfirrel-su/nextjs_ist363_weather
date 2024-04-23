@@ -1,5 +1,4 @@
 import classnames from "classnames/bind";
-
 import styles from "./Row.module.scss";
 
 const cx = classnames.bind(styles);
@@ -11,7 +10,7 @@ const Row = ({ alignItems, children, justifyContent }) => {
         [`align-items-${alignItems}`]: alignItems,
     });
     return (
-        <div className={styles.row}>{children}</div>
+        <div className={rowClasses}>{children}</div>
     )
 };
 export default Row;
