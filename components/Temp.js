@@ -4,7 +4,7 @@ import styles from "./Temp.module.scss";
 
 const cx = classnames.bind(styles);
 
-const Temp = ({amount, size, unit }) => {
+const Temp = ({ amount, size, unit }) => {
     const tempClasses = cx({
         temp: true,
         [`font_size--${size}`] : size,

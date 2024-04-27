@@ -10,6 +10,7 @@ import Image from "next/image";
 import Button from "../components/Button";
 import Col from "../components/Col";
 import Container from "../components/Container"
+import Fit from "../components/Fit";
 import List from "../components/List";
 import Row from "../components/Row";
 import Section from "../components/Section";
@@ -91,6 +92,10 @@ useEffect(() => {
                 width={100}
                 height={100}
               />
+              <Fit
+                amount={weatherData.list[0].main.temp}
+              />
+              <br />
               <br />
               <Button 
                 label={`Change to ${
